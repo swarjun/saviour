@@ -81,23 +81,18 @@
     }
     h1 { font-size: clamp(1.5rem, 5vw, 1.9rem); margin: 0 0 6px; }
     .tagline { color: var(--muted); margin: 0 0 26px; }
-    .buttons { display: flex; flex-direction: column; gap: 12px; }
-    a.store, .store {
-      display: block;
-      text-decoration: none;
-      padding: 14px 18px;
-      border-radius: 14px;
-      font-weight: 700;
-      font-size: 1rem;
-      border: 1px solid var(--border);
+    .badges { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+    .badge {
+      display: inline-block;
+      line-height: 0;
+      border-radius: 12px;
+      transition: transform .12s ease, opacity .12s ease;
     }
-    a.play {
-      color: #fff;
-      background: linear-gradient(135deg, var(--accent), var(--accent-deep));
-      border-color: transparent;
-    }
-    a.ios { color: var(--text); background: transparent; }
-    .store.soon { color: var(--muted); cursor: default; }
+    .badge svg { height: 56px; width: auto; display: block; }
+    a.badge:hover { transform: translateY(-1px); opacity: .92; }
+    a.badge:active { transform: translateY(0); }
+    .badge.soon { opacity: .55; cursor: default; }
+    .coming { margin: 2px 0 0; font-size: 0.8rem; color: var(--muted); }
     .note { margin-top: 22px; font-size: 0.85rem; color: var(--muted); }
     .redirecting { font-size: 0.9rem; color: var(--muted); margin-top: 18px; }
   </style>
@@ -108,14 +103,38 @@
     <h1>Saviour</h1>
     <p class="tagline">Every second counts. Answer the call.</p>
 
-    <div class="buttons">
-      <a class="store play" id="playBtn"
-         href="https://play.google.com/store/apps/details?id=com.swarjun.saviour">
-        Get it on Google Play
+    <div class="badges">
+      <!-- Official-style "Get it on Google Play" badge (self-contained SVG). -->
+      <a class="badge" id="playBtn"
+         href="https://play.google.com/store/apps/details?id=com.swarjun.saviour"
+         aria-label="Get Saviour on Google Play">
+        <svg viewBox="0 0 300 89" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+          <rect x="1" y="1" width="298" height="87" rx="14" fill="#000" stroke="#3a3a3a" stroke-width="1.5"/>
+          <g transform="translate(24,24)">
+            <polygon points="0,0 34,17 5,20" fill="#00C3FF"/>
+            <polygon points="34,17 34,23 5,20" fill="#FFCE00"/>
+            <polygon points="34,23 0,40 5,20" fill="#FF473E"/>
+            <polygon points="0,40 0,0 5,20" fill="#00D66B"/>
+          </g>
+          <text x="82" y="34" fill="#fff" font-family="Arial, Helvetica, sans-serif" font-size="12" letter-spacing="1.5">GET IT ON</text>
+          <text x="81" y="63" fill="#fff" font-family="Arial, Helvetica, sans-serif" font-size="27" font-weight="500">Google Play</text>
+        </svg>
       </a>
-      <!-- The iOS button is filled in by the script below only when the app is
-           live on the App Store; otherwise it shows "coming soon". -->
-      <span class="store soon" id="iosBtn">On iOS — coming soon</span>
+
+      <!-- Official-style "Download on the App Store" badge, shown dimmed until
+           the iOS app is live. The script below upgrades this <span> to a real
+           App Store link (reusing this same artwork) once IOS_URL is set. -->
+      <span class="badge soon" id="iosBtn" aria-label="Coming soon on the App Store">
+        <svg viewBox="0 0 300 89" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+          <rect x="1" y="1" width="298" height="87" rx="14" fill="#000" stroke="#3a3a3a" stroke-width="1.5"/>
+          <g transform="translate(28,18) scale(2.1)" fill="#fff">
+            <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.53 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
+          </g>
+          <text x="84" y="37" fill="#fff" font-family="Arial, Helvetica, sans-serif" font-size="12">Download on the</text>
+          <text x="83" y="65" fill="#fff" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="500">App Store</text>
+        </svg>
+      </span>
+      <p class="coming" id="iosSoon">Coming soon to iOS</p>
     </div>
 
     <p class="redirecting" id="redirecting" hidden>Opening your app store…</p>
@@ -134,11 +153,18 @@
       var isAndroid = /android/i.test(ua);
       var isIOS = /iPad|iPhone|iPod/.test(ua) && !window.MSStream;
 
-      // Wire the iOS button if we have a link.
+      // Upgrade the iOS badge to a real App Store link once we have one,
+      // reusing the badge artwork that's already in the page.
       if (IOS_URL) {
-        var ios = document.getElementById('iosBtn');
-        ios.outerHTML =
-          '<a class="store ios" href="' + IOS_URL + '">Download on the App Store</a>';
+        var iosBtn = document.getElementById('iosBtn');
+        var iosLink = document.createElement('a');
+        iosLink.className = 'badge';
+        iosLink.href = IOS_URL;
+        iosLink.setAttribute('aria-label', 'Download Saviour on the App Store');
+        iosLink.innerHTML = iosBtn.innerHTML;
+        iosBtn.parentNode.replaceChild(iosLink, iosBtn);
+        var soon = document.getElementById('iosSoon');
+        if (soon) soon.hidden = true;
       }
 
       // Redirect mobile visitors straight to their store.
