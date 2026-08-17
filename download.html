@@ -1,0 +1,153 @@
+<!doctype html>
+<!--
+  Smart download link for the "Saviour" app.
+
+  WHAT IT DOES
+   • Android visitors are redirected straight to the Google Play listing.
+   • iOS visitors are redirected to the App Store listing — but ONLY once
+     IOS_URL below is filled in (leave it '' until the iOS app is live, and iOS
+     visitors just see the landing page instead of a dead link).
+   • Everyone else (desktop, etc.) sees a small landing page with the buttons.
+
+  This is the single source of truth for the store links shared from the app.
+  The app's share caption points here (QuoteShare.shareLink in
+  lib/core/services/quote_share.dart), so one URL stays correct on every device.
+
+  TO PUBLISH: host this file on GitHub Pages in the SwarjunTech repo (same place
+  as saviour-privacy-policy.html). Keep the published path in sync with
+  QuoteShare.shareLink — currently:
+    https://chitramstudio.github.io/SwarjunTech/saviour-download.html
+
+  WHEN iOS GOES LIVE: set IOS_URL below (and optionally QuoteShare.appStoreUrl).
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Get Saviour</title>
+  <style>
+    :root {
+      --bg: #f6f7fb;
+      --card: #ffffff;
+      --text: #1c1e26;
+      --muted: #5b6070;
+      --accent: #4f46e5;
+      --accent-deep: #312e81;
+      --border: #e3e6ef;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #14151a;
+        --card: #1d1f27;
+        --text: #e9ebf2;
+        --muted: #a2a7b8;
+        --accent: #8b83ff;
+        --accent-deep: #4f46e5;
+        --border: #2b2e38;
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    .card {
+      width: min(92vw, 460px);
+      margin: 24px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 36px clamp(22px, 6vw, 40px);
+      text-align: center;
+    }
+    .logo {
+      width: 72px;
+      height: 72px;
+      margin: 0 auto 18px;
+      border-radius: 18px;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      font-size: 34px;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--accent), var(--accent-deep));
+    }
+    h1 { font-size: clamp(1.5rem, 5vw, 1.9rem); margin: 0 0 6px; }
+    .tagline { color: var(--muted); margin: 0 0 26px; }
+    .buttons { display: flex; flex-direction: column; gap: 12px; }
+    a.store, .store {
+      display: block;
+      text-decoration: none;
+      padding: 14px 18px;
+      border-radius: 14px;
+      font-weight: 700;
+      font-size: 1rem;
+      border: 1px solid var(--border);
+    }
+    a.play {
+      color: #fff;
+      background: linear-gradient(135deg, var(--accent), var(--accent-deep));
+      border-color: transparent;
+    }
+    a.ios { color: var(--text); background: transparent; }
+    .store.soon { color: var(--muted); cursor: default; }
+    .note { margin-top: 22px; font-size: 0.85rem; color: var(--muted); }
+    .redirecting { font-size: 0.9rem; color: var(--muted); margin-top: 18px; }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <div class="logo" aria-hidden="true">S</div>
+    <h1>Saviour</h1>
+    <p class="tagline">Every second counts. Answer the call.</p>
+
+    <div class="buttons">
+      <a class="store play" id="playBtn"
+         href="https://play.google.com/store/apps/details?id=com.swarjun.saviour">
+        Get it on Google Play
+      </a>
+      <!-- The iOS button is filled in by the script below only when the app is
+           live on the App Store; otherwise it shows "coming soon". -->
+      <span class="store soon" id="iosBtn">On iOS — coming soon</span>
+    </div>
+
+    <p class="redirecting" id="redirecting" hidden>Opening your app store…</p>
+    <p class="note">Choose your store above to download Saviour.</p>
+  </main>
+
+  <script>
+    (function () {
+      // --- Store links (single source of truth) -------------------------
+      var ANDROID_URL =
+        'https://play.google.com/store/apps/details?id=com.swarjun.saviour';
+      var IOS_URL = ''; // TODO: set to the App Store URL once Saviour is live on iOS.
+
+      // --- Device sniff --------------------------------------------------
+      var ua = navigator.userAgent || navigator.vendor || window.opera || '';
+      var isAndroid = /android/i.test(ua);
+      var isIOS = /iPad|iPhone|iPod/.test(ua) && !window.MSStream;
+
+      // Wire the iOS button if we have a link.
+      if (IOS_URL) {
+        var ios = document.getElementById('iosBtn');
+        ios.outerHTML =
+          '<a class="store ios" href="' + IOS_URL + '">Download on the App Store</a>';
+      }
+
+      // Redirect mobile visitors straight to their store.
+      var target = isAndroid ? ANDROID_URL : (isIOS && IOS_URL ? IOS_URL : '');
+      if (target) {
+        document.getElementById('redirecting').hidden = false;
+        window.location.replace(target);
+      }
+    })();
+  </script>
+</body>
+</html>
