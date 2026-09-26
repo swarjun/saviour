@@ -1,0 +1,313 @@
+<!doctype html>
+<!--
+  Marketing / landing page for the "Saviour" app.
+
+  BEFORE PUBLISHING, review/edit:
+   • Brand name is "Swarjun Tech" (Harshal Subhash Kakade, individual developer).
+   • Store links: Google Play is live; the App Store link (id6814795687) starts
+     working once the iOS app is approved.
+   • The "Last updated" date in the footer, if you keep one.
+
+  This is the app's landing page. Host it as index.html in the "saviour" repo
+  (swarjun user), alongside download.html, privacy-policy.html and support.html,
+  so the clean root URL is the landing page:
+    https://swarjun.github.io/saviour/
+  Put that URL into the "Marketing URL" field in App Store Connect. The
+  Privacy/Support footer links are relative, so they resolve within the repo.
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Saviour — Race the clock. Save lives.</title>
+  <meta name="description" content="Saviour is a free rescue puzzle game with five race-against-the-clock missions. Clear the ambulance's path, free trapped wildlife, restore vital signs, escape the hedge maze and drain the flood." />
+  <meta property="og:title" content="Saviour — Rescue puzzles against time" />
+  <meta property="og:description" content="Five rescue missions, one race against the clock. Free, offline, in English, Hindi & Marathi." />
+  <meta property="og:type" content="website" />
+  <style>
+    :root {
+      --bg: #f6f7fb;
+      --card: #ffffff;
+      --text: #1c1e26;
+      --muted: #5b6070;
+      --accent: #0d9488;
+      --accent-2: #0ea5a3;
+      --border: #e3e6ef;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #14151a;
+        --card: #1d1f27;
+        --text: #e9ebf2;
+        --muted: #a2a7b8;
+        --accent: #2dd4bf;
+        --accent-2: #22b8a6;
+        --border: #2b2e38;
+      }
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: var(--accent); }
+    .wrap { max-width: 960px; margin: 0 auto; padding: 0 20px; }
+
+    /* Hero */
+    .hero {
+      text-align: center;
+      padding: 64px 20px 40px;
+      background:
+        radial-gradient(1200px 400px at 50% -120px,
+          color-mix(in srgb, var(--accent) 22%, transparent), transparent);
+    }
+    .brand-tag {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      border-radius: 999px;
+      padding: 3px 12px;
+      margin-bottom: 20px;
+    }
+    .hero h1 {
+      font-size: clamp(2.2rem, 7vw, 3.6rem);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin: 0 0 12px;
+    }
+    .hero .sub {
+      font-size: clamp(1.05rem, 2.6vw, 1.3rem);
+      color: var(--muted);
+      max-width: 640px;
+      margin: 0 auto 28px;
+    }
+
+    /* Store buttons */
+    .stores {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+    .store {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: #fff;
+      background: #111318;
+      border: 1px solid #2b2e38;
+      border-radius: 14px;
+      padding: 11px 18px;
+      min-width: 200px;
+      transition: transform .12s ease, box-shadow .12s ease;
+    }
+    .store:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,.18); }
+    .store svg { flex: none; }
+    .store .label { text-align: left; line-height: 1.15; }
+    .store .label small { display: block; font-size: 0.68rem; opacity: .8; letter-spacing: .02em; }
+    .store .label strong { display: block; font-size: 1.05rem; font-weight: 600; }
+
+    /* Sections */
+    section { padding: 40px 0; }
+    h2 {
+      font-size: clamp(1.5rem, 4vw, 2rem);
+      text-align: center;
+      letter-spacing: -0.01em;
+      margin: 0 0 6px;
+    }
+    .section-lead { text-align: center; color: var(--muted); max-width: 620px; margin: 0 auto 30px; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 22px;
+    }
+    .card .icon { font-size: 1.8rem; line-height: 1; }
+    .card h3 { margin: 12px 0 6px; font-size: 1.12rem; }
+    .card p { margin: 0; color: var(--muted); font-size: 0.96rem; }
+
+    /* Feature list */
+    .features {
+      list-style: none;
+      padding: 0;
+      margin: 0 auto;
+      max-width: 680px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 10px 24px;
+    }
+    .features li {
+      position: relative;
+      padding-left: 28px;
+      color: var(--text);
+    }
+    .features li::before {
+      content: "";
+      position: absolute;
+      left: 0; top: 9px;
+      width: 14px; height: 8px;
+      border-left: 2.5px solid var(--accent);
+      border-bottom: 2.5px solid var(--accent);
+      transform: rotate(-45deg);
+    }
+
+    .langs {
+      text-align: center;
+      color: var(--muted);
+      margin-top: 24px;
+      font-size: 1.05rem;
+    }
+    .langs strong { color: var(--text); }
+
+    .cta {
+      text-align: center;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 40px 24px;
+      margin: 20px 0 0;
+    }
+    .cta h2 { margin-bottom: 8px; }
+
+    footer {
+      border-top: 1px solid var(--border);
+      margin-top: 48px;
+      padding: 28px 20px 48px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+    footer a { color: var(--muted); margin: 0 10px; }
+    footer .copy { margin-top: 12px; font-size: 0.85rem; }
+  </style>
+</head>
+<body>
+
+  <header class="hero">
+    <div class="wrap">
+      <span class="brand-tag">Swarjun Tech</span>
+      <h1>Saviour</h1>
+      <p class="sub">
+        Race the clock. Save lives. Five very different rescue puzzles in one
+        free game — think fast, act faster, and get everyone out safe.
+      </p>
+      <div class="stores">
+        <a class="store" href="https://play.google.com/store/apps/details?id=com.swarjun.saviour" target="_blank" rel="noopener">
+          <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path fill="#EA4335" d="M3.6 2.3 13 11.7l2.6-2.6L5.3 3.1a1.9 1.9 0 0 0-1.7-.8z"/><path fill="#34A853" d="M3.6 21.7c.5.1 1.1 0 1.7-.3l10.3-6-2.6-2.6z"/><path fill="#FBBC04" d="m17.9 9.9-2.9-1.7L12.4 11l2.6 2.6 2.9-1.7c1-.6 1-2.4 0-3z"/><path fill="#4285F4" d="M3.6 2.3c-.4.3-.6.8-.6 1.5v16.4c0 .7.2 1.2.6 1.5L13 11.7z"/></svg>
+          <span class="label"><small>Get it on</small><strong>Google Play</strong></span>
+        </a>
+        <a class="store" href="https://apps.apple.com/app/id6814795687" target="_blank" rel="noopener">
+          <svg width="22" height="24" viewBox="0 0 22 24" aria-hidden="true"><path fill="#fff" d="M17.6 12.7c0-2.3 1.9-3.4 2-3.5-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.1-2.8.9-3.5.9s-1.8-.8-3-.8c-1.5 0-3 .9-3.8 2.3-1.6 2.8-.4 7 1.2 9.3.8 1.1 1.7 2.4 2.9 2.3 1.2 0 1.6-.7 3-.7s1.8.7 3 .7 2-1.1 2.8-2.2c.9-1.3 1.2-2.5 1.3-2.6-.1 0-2.5-1-2.5-3.8zM15.3 5.9c.6-.8 1-1.9.9-3-1 .1-2.1.7-2.8 1.5-.6.7-1.1 1.8-1 2.9 1.1.1 2.2-.6 2.9-1.4z"/></svg>
+          <span class="label"><small>Download on the</small><strong>App Store</strong></span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+
+    <section id="modes">
+      <h2>Five ways to save the day</h2>
+      <p class="section-lead">
+        Every mode is a completely different kind of puzzle — and every level is
+        a race against the clock.
+      </p>
+      <div class="grid">
+        <div class="card">
+          <div class="icon">🚑</div>
+          <h3>Urban Rescue Grid</h3>
+          <p>The ambulance is boxed in. Slide the blocking cars and trucks aside and clear a path to the exit before it's too late.</p>
+        </div>
+        <div class="card">
+          <div class="icon">🦁</div>
+          <h3>WildLife Rescue</h3>
+          <p>Trapped animals need you. Place the keys by pure logic so none of them clash, then spring open every cage.</p>
+        </div>
+        <div class="card">
+          <div class="icon">❤️</div>
+          <h3>Medical Lifeline</h3>
+          <p>Vital signs are scattered across the monitor. Trace one unbroken line through every point to restore the connection.</p>
+        </div>
+        <div class="card">
+          <div class="icon">🌿</div>
+          <h3>Garden Rescue</h3>
+          <p>Someone's lost deep in the hedge maze. Trace a route through the twists and turns and lead them safely out.</p>
+        </div>
+        <div class="card">
+          <div class="icon">🌊</div>
+          <h3>Flood Rescue</h3>
+          <p>The chamber is filling fast. Rotate the pipe pieces to build an unbroken pipeline and drain the water in time.</p>
+        </div>
+        <div class="card" style="display:flex;flex-direction:column;justify-content:center;">
+          <div class="icon">⏱️</div>
+          <h3>Beat your best time</h3>
+          <p>Levels get cleverly harder as you go, with best-time tracking on every one. Just one more try…</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="features">
+      <h2>Why you'll love it</h2>
+      <ul class="features">
+        <li>Quick, satisfying puzzles — a minute each, or lose an hour</li>
+        <li>Five completely different challenges in one app</li>
+        <li>Hundreds of levels that scale up as you improve</li>
+        <li>Beat-the-clock tension with best-time tracking</li>
+        <li>A calm, modern design and a fresh Thought for the Day</li>
+        <li>Play fully offline — no account, no sign-up</li>
+        <li>Free to play</li>
+        <li>Light and dark, tuned for every screen</li>
+      </ul>
+      <p class="langs">
+        Speaks your language: <strong>English</strong>, <strong>हिन्दी</strong>
+        and <strong>मराठी</strong> — switch instantly in Settings.
+      </p>
+    </section>
+
+    <section>
+      <div class="cta">
+        <h2>Answer the call</h2>
+        <p class="section-lead">Whether you've got sixty seconds in a queue or a quiet evening to unwind, Saviour keeps your mind sharp and your reflexes sharper.</p>
+        <div class="stores">
+          <a class="store" href="https://play.google.com/store/apps/details?id=com.swarjun.saviour" target="_blank" rel="noopener">
+            <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path fill="#EA4335" d="M3.6 2.3 13 11.7l2.6-2.6L5.3 3.1a1.9 1.9 0 0 0-1.7-.8z"/><path fill="#34A853" d="M3.6 21.7c.5.1 1.1 0 1.7-.3l10.3-6-2.6-2.6z"/><path fill="#FBBC04" d="m17.9 9.9-2.9-1.7L12.4 11l2.6 2.6 2.9-1.7c1-.6 1-2.4 0-3z"/><path fill="#4285F4" d="M3.6 2.3c-.4.3-.6.8-.6 1.5v16.4c0 .7.2 1.2.6 1.5L13 11.7z"/></svg>
+            <span class="label"><small>Get it on</small><strong>Google Play</strong></span>
+          </a>
+          <a class="store" href="https://apps.apple.com/app/id6814795687" target="_blank" rel="noopener">
+            <svg width="22" height="24" viewBox="0 0 22 24" aria-hidden="true"><path fill="#fff" d="M17.6 12.7c0-2.3 1.9-3.4 2-3.5-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.1-2.8.9-3.5.9s-1.8-.8-3-.8c-1.5 0-3 .9-3.8 2.3-1.6 2.8-.4 7 1.2 9.3.8 1.1 1.7 2.4 2.9 2.3 1.2 0 1.6-.7 3-.7s1.8.7 3 .7 2-1.1 2.8-2.2c.9-1.3 1.2-2.5 1.3-2.6-.1 0-2.5-1-2.5-3.8zM15.3 5.9c.6-.8 1-1.9.9-3-1 .1-2.1.7-2.8 1.5-.6.7-1.1 1.8-1 2.9 1.1.1 2.2-.6 2.9-1.4z"/></svg>
+            <span class="label"><small>Download on the</small><strong>App Store</strong></span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div>
+      <a href="privacy-policy.html">Privacy Policy</a>
+      <a href="support.html">Support</a>
+      <a href="mailto:swarjuntech@outlook.com">Contact</a>
+    </div>
+    <div class="copy">© 2026 Swarjun Tech. All rights reserved.</div>
+  </footer>
+
+</body>
+</html>
